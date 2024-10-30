@@ -1,4 +1,5 @@
-const a = 'hello';
-function sum() {
-  console.log(1 + 2);
-}
+// alert('경고창');
+
+// confirm('취소와 확인');
+
+// prompt('질문');
