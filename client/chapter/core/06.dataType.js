@@ -51,8 +51,31 @@ console.log(typeof null);
 
 // Object
 
+// 객체에 메서드를 정의하는 방법
+// 1. normal function
+// 2. arrow function
+// 3. concise method
+
+// arrow function은 this를 바인딩하지 않고 상위 컨텍스트에서 this를 찾음
+// 객체의 메서드를 정의할 때 => concise method 권장
+// 메서드 안에서 함수를 정의해야 할 때 => arrow function 권장, 이유는 this를 찾기 위해서
+
+const user = {
+  name: 'tiger',
+  age: 42,
+  sayHi: function () {
+    console.log(this);
+  },
+  sayHi2: () => {
+    console.log(this);
+  },
+  sayHi3() {
+    console.log(this);
+  },
+};
+
 // Array
-console.log(typeof entity);
+const arr = [1, 2, 3, 4, 5];
 
 // function
 console.log(typeof alert);
