@@ -39,10 +39,10 @@
 //       Yes | No
 
 // 영화 봤니?
-let didWatchMovie;
+// let didWatchMovie;
 
 // 영화 볼거니?
-let goingToWatchMovie;
+// let goingToWatchMovie;
 
 // if 문(statement)
 
@@ -53,3 +53,25 @@ let goingToWatchMovie;
 // 조건부 연산자
 
 // 멀티 조건부 연산자 식
+
+// let didwatchMovie = confirm('영화 봤어?');
+// let goingToWatchMovie = confirm('영화 볼거야?');
+
+// didwatchMovie
+//   ? console.log('watched movie')
+//   : goingToWatchMovie
+//     ? console.log('will watch movie')
+//     : console.log('hate movie');
+
+function watchingMovie() {
+  let didwatchMovie = confirm('영화 봤어?');
+  let goingToWatchMovie = confirm('영화 볼거야?');
+
+  if (didwatchMovie) {
+    console.log('watched movie');
+  } else if (goingToWatchMovie) {
+    console.log('will watch movie');
+  } else {
+    console.log('hate movie');
+  }
+}
