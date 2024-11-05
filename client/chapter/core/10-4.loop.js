@@ -9,6 +9,8 @@ const javaScript = {
   currentVersion: 2023,
 };
 
+Object.prototype.nickname = 'tiger';
+
 console.log('creator' in javaScript);
 
 // 객체의 속성(property) 포함 여부 확인 방법
@@ -20,3 +22,9 @@ console.log('creator' in javaScript);
 // for ~ in 문
 // - 객체 자신의 속성만 순환하려면?
 // - 배열 객체 순환에 사용할 경우?
+
+for (const key in javaScript) {
+  if (Object.hasOwn(javaScript, key)) {
+    console.log(javaScript[key]);
+  }
+}
