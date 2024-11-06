@@ -77,7 +77,7 @@ console.assert(rem('25px') === '1.5625rem');
 console.assert(rem('30px', 10) === '3rem');
 
 // css(node: string, prop: string, value: number|strung) : string;
-let css;
+// let css;
 
 function setCss(node, prop, value) {
   if (typeof node === 'string') {
@@ -95,7 +95,7 @@ function setCss(node, prop, value) {
   node.style[prop] = value;
 }
 
-setCss('h1', 'fontSize', '100px');
+// setCss('h1', 'fontSize', '100px');
 
 // node의 값을 'h1'으로 받았을 경우
 
@@ -113,3 +113,27 @@ setCss('h1', 'fontSize', '100px');
 // 2. h1의 폰트 사이즈를 가져온다.
 // 3. 증가함수와 감소함수를 만든다.
 // 4. 클릭 이벤트와 바인딩한다.
+
+function getCss(node, prop) {
+  if (typeof node === 'string') {
+    node = document.querySelector(node);
+  }
+
+  if (!(prop in document.body.style))
+    throw new ReferenceError(
+      'setCss 함수의 두 번째 인수는 유효한 css 속성이어야 합니다.'
+    );
+
+  return getComputedStyle(node)[prop];
+}
+
+// const fontSize = getCss('.first', 'font-size');
+
+// console.log(fontSize);
+
+function css(node, prop, value) {
+  return !value ? getCss(node, prop) : setCss(node, prop, value);
+}
+
+const _css = (node, prop, value) =>
+  !value ? getCss(node, prop) : setCss(node, prop, value);
