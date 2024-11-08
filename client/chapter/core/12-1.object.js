@@ -155,9 +155,50 @@ const arr = [10, 100, 1100, 10000];
 
 // const [a1, a2, a3] = arr;
 // const [a1, a2, a3, a4, a5 = 100000] = arr;
+console.clear();
 
 const [first, second] = document.querySelectorAll('span');
+
+for (const [k, v] of Object.entries(authUser)) {
+  console.log(k);
+  console.log(v);
+}
+
+// Object.entries.map(([k,v]) => {
+
+// })
 
 /* -------------------------------------------- */
 /* 객체 구조 분해 할당  destructuring assignments    */
 /* --------------------------------------------- */
+
+// const salaries = {
+//   김: 100,
+//   이: 300,
+//   박: 22,
+//   나: 123,
+// };
+
+// const { 김, 박, 나, 이 } = salaries;
+
+// console.log(나);
+
+function createUserObject({ name, age, address, ...rest } = {}) {
+  // const { name, age, address, phone, job } = obj;
+
+  return {
+    name,
+    age,
+    address,
+  };
+}
+
+const data = {
+  name: '심',
+  age: 35,
+  address: '중랑',
+  phone: '010-2133-1223',
+  job: '강사',
+};
+
+const user = createUserObject(data);
