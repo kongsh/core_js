@@ -70,3 +70,17 @@ function Tiger(name) {
 // Tiger.prototype = a;
 
 const 금강산호랑이 = new Tiger('금순이');
+
+Tiger.bark = function (sound) {
+  return sound;
+};
+
+// call -> 함수를 대신 실행 시켜줌 -> 빌려쓰기 -> 인수 : 값(리터럴)
+// apply -> 함수를 대신 실행 시켜줌 -> 빌려쓰기 - > 인수 : 배열
+// bind -> 함수를 대신 실행 X -> 빌려쓰기
+
+function sum(a, b) {
+  console.log(this, a + b);
+}
+
+sum.bind('안녕!', [10, 20]);
