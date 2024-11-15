@@ -15,10 +15,14 @@ const dom = {
   getNode: true,
   getAttr: true,
   setAttr: true,
+  attr: true,
+  insertLast: true,
 };
 
 const error = {
   typeError: true,
+  syntaxError: true,
+  refError: true,
 };
 
 export default [
