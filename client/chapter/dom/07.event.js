@@ -67,7 +67,7 @@ function handleMove({ offsetX: x, offsetY: y }) {
   insertLast(ground, template);
 }
 
-ground.addEventListener('mousemove', handleMove);
+// ground.addEventListener('mousemove', handleMove);
 
 const input = getNode('input');
 
@@ -80,3 +80,33 @@ function handleInput() {
 }
 
 input.addEventListener('input', handleInput);
+
+// debounce
+
+ground.addEventListener('mousemove', debounce(handleMove, 100));
+
+function debounce(callback, limit = 500) {
+  let timeout;
+
+  return function (e) {
+    clearTimeout(timeout);
+    timeout = setTimeout(() => {
+      callback.call(this, e);
+    }, limit);
+  };
+}
+
+// throttle
+ground.addEventListener('mousemove', throttle(handle, 100));
+
+function throttle(callback, limit = 500) {
+  let wait = false;
+
+  return function () {
+    if (!wait) {
+      callback();
+      wait = true;
+      setTimeout(() => (wait = false), limit);
+    }
+  };
+}
