@@ -1,3 +1,7 @@
+import { isString, isObject, isArray } from '../utils/type.js';
+import { getNode } from '../dom/getNode.js';
+import { syntaxError } from '../error/syntaxError.js';
+
 /* -------------------------------------------- */
 /*                   css class                  */
 /* -------------------------------------------- */
@@ -9,7 +13,7 @@
  * @param  {string | array | object} className
  * @return {void}
  */
-function addClass(node, ...className) {
+export function addClass(node, ...className) {
   if (isString(node)) node = getNode(node);
 
   className.forEach((c) => {
@@ -22,14 +26,14 @@ function addClass(node, ...className) {
   });
 }
 
-function removeClass(node, className) {
+export function removeClass(node, className) {
   if (isString(node)) node = getNode(node);
   if (!className) node.className = '';
 
   node.classList.remove(className);
 }
 
-function toggleClass(node, className) {
+export function toggleClass(node, className) {
   if (isString(node)) node = getNode(node);
   return node.classList.toggle(className);
 }
@@ -58,5 +62,5 @@ function setCss(node, prop, value) {
   node.style[prop] = value;
 }
 
-const css = (node, prop, value) =>
+export const css = (node, prop, value) =>
   !value ? getCss(node, prop) : setCss(node, prop, value);

@@ -1,3 +1,7 @@
+import { isString, isUndefined } from '../utils/type.js';
+import { getNode } from '../dom/getNode.js';
+import { typeError } from '../error/typeError.js';
+
 function getAttr(node, prop) {
   if (isString(node)) node = getNode(node);
 
@@ -27,17 +31,5 @@ function setAttr(node, prop, value) {
   node.setAttribute(prop, value);
 }
 
-// function attr(node,prop,value){
-
-//   if(!value){
-//     return getAttr(node,prop)
-//   }else{
-//     setAttr(node,prop,value)
-//   }
-// }
-
-const attr = (node, prop, value) =>
+export const attr = (node, prop, value) =>
   !value ? getAttr(node, prop) : setAttr(node, prop, value);
-
-// attr('.about','id') // getter
-// attr('.about','id','star') // setter
