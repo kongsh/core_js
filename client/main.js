@@ -1,78 +1,84 @@
-// [phase-1]
 import {
-  copy,
-  shake,
-  addClass,
-  showAlert,
-  getRandom,
+  memo,
+  attr,
+  getNode,
+  getNodes,
+  endScroll,
   insertLast,
-  removeClass,
-  getNode as $,
   clearContents,
-  isNumericString,
+  diceAnimation,
 } from './lib/index.js';
-import data from './data/data.js';
 
-// 버튼 클릭 함수
-// input 값 가져오기
+const [rollingButton, recordButton, resetButton] = getNodes(
+  '.buttonGroup > button'
+);
+const recordListWrapper = getNode('.recordListWrapper');
 
-// [phase-1]
+let count = 0;
+let total = 0;
 
-// 1. 주접 떨기 버튼을 클릭 하는 함수
-//   - 주접 떨기 버튼 가져오기
-//   - 이벤트 연결
+const handleRollingDice = (() => {
+  let isClicked = false;
+  let stopAnimation;
 
-// 2. input 값 가져오기
-//   - 콘솔에 출력
+  return () => {
+    if (!isClicked) {
+      stopAnimation = setInterval(diceAnimation, 100);
+      recordButton.disabled = true;
+      resetButton.disabled = true;
+    } else {
+      clearInterval(stopAnimation);
+      recordButton.disabled = false;
+      resetButton.disabled = false;
+    }
+    isClicked = !isClicked;
+  };
+})();
 
-// 3. data 함수에서 주접 1개 꺼내기
-//    - n번째 random 주접을 꺼내기
-//    - Math.random()
+// const handleRecord = (() => {
+//   let isClicked = false;
 
-// 4. result에 랜더링하기
-//    - insertLast()
+//   return () => {
+//     if (!isClicked) {
+//       recordListWrapper.hidden = false;
+//     } else {
+//       recordListWrapper.hidden = true;
+//     }
+//     isClicked = !isClicked;
+//   };
+// })();
 
-// [phase-2]
-
-// 5. 예외 처리
-//    - 이름이 없을 경우 콘솔에 에러 출력 => result에 결괏값 나오면 x
-//    - 숫자만 들어오면 콘솔에 에러 출력
-
-const submit = $('#submit');
-const nameField = $('#nameField');
-const result = $('.result');
-
-function handleSubmit(e) {
-  e.preventDefault();
-  const name = nameField.value;
-  const list = data(name);
-  const pick = list[getRandom(list.length)];
-
-  // 만약에 name의 값이 '' 라면...
-
-  if (!name || name.replaceAll(' ', '') === '') {
-    showAlert('.alert-error', '공백은 허용하지 않습니다.', 1200);
-    shake(nameField);
-    return;
-  }
-
-  if (!isNumericString(name)) {
-    showAlert('.alert-error', '정확한 이름을 입력해 주세요', 1200);
-    shake(nameField);
-    return;
-  }
-
-  clearContents(result);
-  insertLast(result, pick);
+function createItem(value) {
+  return `
+    <tr>
+      <td>${++count}</td>
+      <td>${value}</td>
+      <td>${(total += value)}</td>
+    </tr>
+  `;
 }
 
-function handleCopy() {
-  const text = this.textContent;
+function renderRecordItem() {
+  const diceNumber = +memo('cube').getAttribute('dice');
 
-  copy(text).then(() => {
-    showAlert('.alert-success', '클립보드 복사!');
-  });
+  insertLast('tbody', createItem(diceNumber));
 }
 
-submit.addEventListener('click', handleSubmit);
-result.addEventListener('click', handleCopy);
+function handleRecord() {
+  recordListWrapper.hidden = false;
+
+  renderRecordItem();
+
+  endScroll(recordListWrapper);
+}
+
+function handleReset() {
+  recordListWrapper.hidden = true;
+  clearContents('tbody');
+  count = 0;
+  total = 0;
+}
+
+rollingButton.addEventListener('click', handleRollingDice);
+recordButton.addEventListener('click', handleRecord);
+resetButton.addEventListener('click', handleReset);
