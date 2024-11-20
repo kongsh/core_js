@@ -1,92 +1,78 @@
-// import { getNode, getNodes } from './lib/dom/getNode.js';
-// import { insertLast } from './lib/dom/insert.js';
-// import clearContents from './lib/dom/clearContents.js';
-
+// [phase-1]
 import {
-  getNode as $,
-  getNodes,
-  typeError,
+  copy,
+  shake,
+  addClass,
+  showAlert,
+  getRandom,
   insertLast,
+  removeClass,
+  getNode as $,
   clearContents,
+  isNumericString,
 } from './lib/index.js';
+import data from './data/data.js';
 
-// const first = getNode('#firstNumber');
-// const second = getNode('#secondNumber');
-// const button = getNode('#clear');
-// const result = getNode('.result');
+// 버튼 클릭 함수
+// input 값 가져오기
 
-// /* global clearContents */
+// [phase-1]
 
-// function handleSum(e) {
-//   e.preventDefault();
+// 1. 주접 떨기 버튼을 클릭 하는 함수
+//   - 주접 떨기 버튼 가져오기
+//   - 이벤트 연결
 
-//   const total = +first.value + +second.value;
+// 2. input 값 가져오기
+//   - 콘솔에 출력
 
-//   clearContents(result);
-//   insertLast(result, total);
+// 3. data 함수에서 주접 1개 꺼내기
+//    - n번째 random 주접을 꺼내기
+//    - Math.random()
 
-//   clearContents(first);
-//   clearContents(second);
-// }
+// 4. result에 랜더링하기
+//    - insertLast()
 
-// button.addEventListener('click', handleSum);
+// [phase-2]
 
-// 1. input 선택하기
-// 2. input 이벤트 바인딩
-// 3. input의 value 값 가져오기
-// 4. 숫자 더하기
-// 5. result에 출력하기
+// 5. 예외 처리
+//    - 이름이 없을 경우 콘솔에 에러 출력 => result에 결괏값 나오면 x
+//    - 숫자만 들어오면 콘솔에 에러 출력
 
-function phase1() {
-  const first = $('#firstNumber');
-  const second = $('#secondNumber');
-  const clear = $('#clear');
-  const result = $('.result');
+const submit = $('#submit');
+const nameField = $('#nameField');
+const result = $('.result');
 
-  function handleInput() {
-    const firstValue = Number(first.value);
-    const secondValue = +second.value;
-    const total = firstValue + secondValue;
+function handleSubmit(e) {
+  e.preventDefault();
+  const name = nameField.value;
+  const list = data(name);
+  const pick = list[getRandom(list.length)];
 
-    clearContents(result);
-    insertLast(result, total);
+  // 만약에 name의 값이 '' 라면...
+
+  if (!name || name.replaceAll(' ', '') === '') {
+    showAlert('.alert-error', '공백은 허용하지 않습니다.', 1200);
+    shake(nameField);
+    return;
   }
 
-  function handleClear(e) {
-    e.preventDefault();
-
-    clearContents(first);
-    clearContents(second);
-    result.textContent = '-';
+  if (!isNumericString(name)) {
+    showAlert('.alert-error', '정확한 이름을 입력해 주세요', 1200);
+    shake(nameField);
+    return;
   }
 
-  first.addEventListener('input', handleInput);
-  second.addEventListener('input', handleInput);
-  clear.addEventListener('click', handleClear);
+  clearContents(result);
+  insertLast(result, pick);
 }
 
-function phase2() {
-  const calculator = $('.calculator');
-  const result = $('.result');
-  const clear = $('#clear');
-  const numberInputs = [...document.querySelectorAll('input:not(#clear)')];
+function handleCopy() {
+  const text = this.textContent;
 
-  function handleInput() {
-    const total = numberInputs.reduce((acc, cur) => acc + +cur.value, 0);
-
-    clearContents(result);
-    insertLast(result, total);
-  }
-
-  function handleClear(e) {
-    e.preventDefault();
-
-    numberInputs.forEach(clearContents);
-    result.textContent = '-';
-  }
-
-  calculator.addEventListener('input', handleInput);
-  clear.addEventListener('click', handleClear);
+  copy(text).then(() => {
+    showAlert('.alert-success', '클립보드 복사!');
+  });
 }
 
-phase2();
+submit.addEventListener('click', handleSubmit);
+result.addEventListener('click', handleCopy);
