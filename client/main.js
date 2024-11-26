@@ -1,23 +1,13 @@
-import { deleteStorage, getNode, getStorage, setStorage } from './lib/index.js';
+import { Button } from './components/Button/Button.js';
 
-// 인풋 이벤트 바인딩, 타이핑 될 때마다 값을 localstorage에 저장
-// init 함수안에서 localstorage의 값을 가져와 input의 value로 설정(새로고침 해도 data 유지)
-const textArea = getNode('#textField');
-const clearButton = getNode('button[data-name="clear"]');
+const app = document.getElementById('app');
 
-function init() {
-  getStorage('text').then((res) => (textArea.value = res));
+function defineElements() {
+  customElements.define('custom-button', Button);
 }
 
-function handleTextArea() {
-  setStorage('text', this.value);
-}
+defineElements();
 
-function handleClear() {
-  textArea.value = '';
-  deleteStorage('text');
-}
+const buttonElement = document.createElement('custom-button');
 
-init();
-textArea.addEventListener('input', handleTextArea);
-clearButton.addEventListener('click', handleClear);
+app.append(buttonElement);
