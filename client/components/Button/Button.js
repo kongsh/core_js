@@ -11,9 +11,9 @@ export class Button extends HTMLElement {
     this.render();
   }
 
-  connectedCallback() {
-    this.button = this.shadowRoot.querySelector('button');
-  }
+  // connectedCallback() {
+  //   this.button = this.shadowRoot.querySelector('button');
+  // }
 
   static get observedAttributes() {
     return ['active'];
