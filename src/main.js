@@ -1,4 +1,4 @@
-import "/src/style/style.css";
+import "@/style/style.css";
 import { getNode, insertLast } from "kind-tiger";
 import santa from "/src/assets/santa.png";
 import { btn } from "/src/style/style.module.css";
