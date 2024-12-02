@@ -1,0 +1,18 @@
+let num1 = 10;
+let num2 = NaN;
+let num3 = -123;
+let num4 = 0.1234235;
+let str1 = "hi";
+let str2 = "hi";
+let str3 = `ji${num2}`;
+let bool1 = true;
+let bool2 = false;
+let nullA = null;
+let undef = undefined;
+let numA = 10;
+let strA = "hello";
+let boolA = true;
+let unknown;
+let never;
+let any;
+export {};
