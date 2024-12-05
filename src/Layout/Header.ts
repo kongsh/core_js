@@ -1,9 +1,13 @@
 import { LitElement, html, css, CSSResultGroup } from "lit";
-import { customElement } from "lit/decorators.js";
+import { customElement, state } from "lit/decorators.js";
 import resetCSS from "./resetCSS";
-
+import { Auth } from "../@types/type";
+import Swal from "sweetalert2";
+import pb from "../api/pocketbase";
 @customElement("c-header")
 class Header extends LitElement {
+  @state() private loginData: Auth = {} as Auth;
+
   static styles: CSSResultGroup | undefined = [
     resetCSS,
     css`
@@ -33,7 +37,39 @@ class Header extends LitElement {
     `,
   ];
 
+  connectedCallback(): void {
+    super.connectedCallback();
+    this.fetchData();
+  }
+
+  handleLogout(e: Event) {
+    e.preventDefault();
+
+    Swal.fire({
+      title: "로그아웃",
+      text: "로그아웃 하시겠습니까?",
+      icon: "question",
+      showCancelButton: true,
+      confirmButtonText: "로그아웃",
+    }).then(({ isConfirmed }) => {
+      if (isConfirmed) {
+        localStorage.removeItem("auth");
+        pb.authStore.clear();
+        // this.loginData.isAuth = false;
+        // this.requestUpdate();
+        location.reload();
+      }
+    });
+  }
+
+  fetchData() {
+    const auth = JSON.parse(localStorage.getItem("auth") ?? "{}");
+    this.loginData = auth;
+  }
+
   render() {
+    const { isAuth, user } = this.loginData;
+
     return html`
       <header>
         <h1 class="logo">
@@ -45,7 +81,16 @@ class Header extends LitElement {
             <li><a href="/">About</a></li>
             <li><a href="/src/pages/product/">Product</a></li>
             <li><a href="/">Contact</a></li>
-            <li><a href="/">Login</a></li>
+            <li>
+              ${!isAuth
+                ? html`<a href="/src/pages/login/">Login</a>`
+                : html`
+                    <div>
+                      <span>${user.name}님</span>
+                      <a @click=${this.handleLogout} href="/">logout</a>
+                    </div>
+                  `}
+            </li>
           </ul>
         </nav>
       </header>
